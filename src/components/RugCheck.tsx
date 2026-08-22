@@ -447,29 +447,47 @@ export function RugCheck() {
             </div>
 
             <ul className="grid gap-3 sm:grid-cols-2">
-              {report.checks.map((c) => (
-                <li key={c.label} className="pop-card p-5">
-                  <div className="flex items-start justify-between gap-2">
-                    <p className={`flex items-center gap-2 text-sm font-semibold ${LEVEL_CLASS[c.level]}`}>
-                      <span aria-hidden>{ICON[c.level]}</span>
-                      {c.label}
-                    </p>
-                    {c.source !== "—" && (
-                      <span className="shrink-0 rounded-full bg-secondary px-2 py-0.5 text-[10px] text-secondary-foreground">
-                        {c.source}
-                      </span>
+              {report.checks.map((c) => {
+                const meta = SOURCE_META[c.source];
+                return (
+                  <li key={c.label} className="pop-card relative p-5">
+                    {meta && (
+                      <a
+                        href={meta.href(report.address)}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="absolute right-3 top-3 flex items-center gap-1 rounded-full border border-border bg-secondary px-2 py-0.5 text-[10px] text-secondary-foreground transition-opacity hover:opacity-80"
+                      >
+                        <img
+                          src={`https://www.google.com/s2/favicons?domain=${meta.domain}&sz=32`}
+                          alt=""
+                          width={16}
+                          height={16}
+                          className="h-4 w-4 rounded-sm"
+                        />
+                        {meta.label}
+                      </a>
                     )}
-                  </div>
-                  <p className="mt-2 text-sm text-muted-foreground">{c.detail}</p>
-                </li>
-              ))}
+                    <div className="flex items-start justify-between gap-2">
+                      <p
+                        className={`flex items-center gap-2 pr-24 text-sm font-semibold ${LEVEL_CLASS[c.level]}`}
+                      >
+                        <span aria-hidden>{ICON[c.level]}</span>
+                        {c.label}
+                      </p>
+                    </div>
+                    <p className="mt-2 text-sm text-muted-foreground">{c.detail}</p>
+                  </li>
+                );
+              })}
             </ul>
           </div>
         )}
 
         <p className="mt-6 text-xs text-muted-foreground">
-          This is not financial advice. Data is fetched automatically from GoPlus Security and RugCheck.xyz —
-          always DYOR (Do Your Own Research) before buying.
+          This is not financial advice. Data is fetched automatically from GoPlus Security and RugCheck.xyz
+          — click the source badge on each check to verify independently. Always DYOR (Do Your Own Research)
+          before buying.
         </p>
       </div>
     </section>
