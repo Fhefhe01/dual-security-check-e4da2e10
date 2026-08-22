@@ -446,6 +446,14 @@ function Index() {
               >
                 Telegram Stickers
               </a>
+              <a
+                href="https://t.me/+xw2X7ohDRUJjN2Rl"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="rounded-full border-2 border-border bg-card px-7 py-3 font-display transition-colors hover:border-primary hover:text-primary"
+              >
+                Telegram Group
+              </a>
             </div>
 
           </div>
