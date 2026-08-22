@@ -392,7 +392,7 @@ export function RugCheck() {
       <div className="mx-auto max-w-4xl px-4 py-16 md:py-20">
         <h2 className="text-3xl sm:text-4xl">Rug Check</h2>
         <p className="mt-3 text-muted-foreground">
-          Paste any Solana contract address — not just $KOPI — and the cat detective will sniff out mint
+          Paste any Solana contract address — not just $KOPICAT — and the cat detective will sniff out mint
           authority, freeze authority, liquidity, holders and honeypot traps.
         </p>
 

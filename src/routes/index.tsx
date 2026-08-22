@@ -30,16 +30,16 @@ const PUMPFUN = PUMPFUN_URL;
 const TELEGRAM_STICKERS = "https://t.me/addstickers/KOPICAT20H";
 
 const STICKERS: [string, string][] = [
-  [sticker1, "$KOPI cat riding a rocket with coffee"],
-  [sticker2, "$KOPI cat holding a green candle"],
-  [sticker3, "$KOPI cat sleeping on a coffee cup"],
-  [sticker4, "$KOPI cat crying over spilled coffee"],
-  [sticker5, "$KOPI cat as a barista with a latte"],
-  [sticker6, "$KOPI cat thumbs up next to a green arrow"],
-  [sticker7, "$KOPI cat shocked at the chart"],
-  [sticker8, "$KOPI cat king on a pile of gold coins"],
-  [sticker9, "$KOPI cat coding at night with coffee"],
-  [sticker10, "$KOPI cat blowing a heart kiss"],
+  [sticker1, "$KOPICAT cat riding a rocket with coffee"],
+  [sticker2, "$KOPICAT cat holding a green candle"],
+  [sticker3, "$KOPICAT cat sleeping on a coffee cup"],
+  [sticker4, "$KOPICAT cat crying over spilled coffee"],
+  [sticker5, "$KOPICAT cat as a barista with a latte"],
+  [sticker6, "$KOPICAT cat thumbs up next to a green arrow"],
+  [sticker7, "$KOPICAT cat shocked at the chart"],
+  [sticker8, "$KOPICAT cat king on a pile of gold coins"],
+  [sticker9, "$KOPICAT cat coding at night with coffee"],
+  [sticker10, "$KOPICAT cat blowing a heart kiss"],
 ];
 
 
@@ -47,16 +47,16 @@ const STICKERS: [string, string][] = [
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
-      { title: "$KOPI — The Coffee Cat Meme Coin on Solana" },
+      { title: "$KOPICAT — The Coffee Cat Meme Coin on Solana" },
       {
         name: "description",
         content:
-          "$KOPI is the most caffeinated cat on Solana. Read the lore, tokenomics, how to buy on pump.fun, roadmap, and verify the official contract address.",
+          "$KOPICAT is the most caffeinated cat on Solana. Read the lore, tokenomics, how to buy on pump.fun, roadmap, and verify the official contract address.",
       },
-      { property: "og:title", content: "$KOPI — The Coffee Cat Meme Coin on Solana" },
+      { property: "og:title", content: "$KOPICAT — The Coffee Cat Meme Coin on Solana" },
       {
         property: "og:description",
-        content: "Lore, tokenomics, how to buy, and meme gallery for $KOPI. Coffee first, moon second.",
+        content: "Lore, tokenomics, how to buy, and meme gallery for $KOPICAT. Coffee first, moon second.",
       },
     ],
   }),
@@ -133,8 +133,8 @@ function Index() {
       <header className="sticky top-0 z-50 border-b border-border bg-background/80 backdrop-blur">
         <div className="mx-auto flex max-w-6xl items-center justify-between gap-4 px-4 py-3">
           <a href="#top" className="flex items-center gap-2 font-display text-lg">
-            <img src={mascot} alt="$KOPI cat mascot" width={40} height={40} className="h-9 w-9" />
-            $KOPI
+            <img src={mascot} alt="$KOPICAT cat mascot" width={40} height={40} className="h-9 w-9" />
+            $KOPICAT
           </a>
           <nav className="hidden gap-6 text-sm md:flex">
             {nav.map(([id, label]) => (
@@ -163,7 +163,7 @@ function Index() {
                 Launched on pump.fun · Solana · Fair launch
               </span>
               <h1 className="mt-5 text-5xl leading-tight sm:text-6xl whitespace-pre-line">
-                $KOPI{"\n"}
+                $KOPICAT{"\n"}
                 <span className="text-primary">The Coffee Cat</span>
               </h1>
               <p className="mt-4 max-w-md text-lg text-muted-foreground">
@@ -226,7 +226,7 @@ function Index() {
 
             <img
               src={mascot}
-              alt="$KOPI mascot: an orange cat wearing sunglasses holding a cup of coffee"
+              alt="$KOPICAT mascot: an orange cat wearing sunglasses holding a cup of coffee"
               width={1024}
               height={1024}
               className="wiggle mx-auto w-64 drop-shadow-2xl sm:w-80 md:w-full md:max-w-md"
@@ -248,7 +248,7 @@ function Index() {
                 combined. He only asks for one thing in return: coffee, every morning, no sugar.
               </p>
               <p className="text-foreground">
-                $KOPI exists to fund this cat's caffeine habit — and the community that believes the best
+                $KOPICAT exists to fund this cat's caffeine habit — and the community that believes the best
                 financial decisions happen after the first cup.
               </p>
             </div>
@@ -345,8 +345,8 @@ function Index() {
               {[
                 ["Install Phantom", "Download the Phantom wallet app or browser extension and store your seed phrase offline."],
                 ["Get some SOL", "Buy SOL on any exchange and send it to your Phantom wallet address."],
-                ["Open pump.fun", "Connect your wallet on pump.fun and open the official $KOPI coin page."],
-                ["Swap for $KOPI", "Enter your amount, set slippage to 3-5%, and confirm. Welcome to the litter."],
+                ["Open pump.fun", "Connect your wallet on pump.fun and open the official $KOPICAT coin page."],
+                ["Swap for $KOPICAT", "Enter your amount, set slippage to 3-5%, and confirm. Welcome to the litter."],
               ].map(([t, d], i) => (
                 <li key={t} className="pop-card p-6">
                   <span className="font-display text-3xl text-primary">0{i + 1}</span>
@@ -395,7 +395,7 @@ function Index() {
           <div className="mx-auto max-w-6xl px-4 py-16 md:py-20">
             <h2 className="text-3xl sm:text-4xl">Meme Gallery</h2>
             <p className="mt-3 text-muted-foreground">
-              10 $KOPI stickers, ready for Telegram. Grab the pack and spam every chat.
+              10 $KOPICAT stickers, ready for Telegram. Grab the pack and spam every chat.
             </p>
             <a
               href={TELEGRAM_STICKERS}
@@ -427,7 +427,7 @@ function Index() {
           <div className="mx-auto max-w-4xl px-4 py-16 text-center md:py-20">
             <h2 className="text-3xl sm:text-4xl">Join the Cat Cult</h2>
             <p className="mx-auto mt-3 max-w-lg text-muted-foreground">
-              The $KOPI community runs 24/7 — just like a cat that wakes you up at 3 AM.
+              The $KOPICAT community runs 24/7 — just like a cat that wakes you up at 3 AM.
             </p>
             <div className="mt-8 flex flex-wrap justify-center gap-3">
               <a
@@ -465,11 +465,11 @@ function Index() {
             </a>
           </div>
           <p>
-            Disclaimer: $KOPI is a meme coin with no utility and no promise of financial return.
+            Disclaimer: $KOPICAT is a meme coin with no utility and no promise of financial return.
             Crypto is highly risky — DYOR and never invest more than you can afford to lose.
             LP burn and mint revoke proofs are verifiable on Solscan.
           </p>
-          <p>© {new Date().getFullYear()} $KOPI. Built by the community, for the cat.</p>
+          <p>© {new Date().getFullYear()} $KOPICAT. Built by the community, for the cat.</p>
         </div>
       </footer>
     </div>

@@ -23,8 +23,8 @@ export const getTokenStats = createServerFn({ method: "GET" }).handler(async ():
 
   if (!HAS_CA) {
     return {
-      name: "KOPI",
-      symbol: "KOPI",
+      name: "KOPICAT",
+      symbol: "KOPICAT",
       totalSupply: 1_000_000_000,
       priceUsd: null,
       marketCapUsd: null,
