@@ -12,4 +12,9 @@ export default defineConfig({
     // nitro/vite builds from this
     server: { entry: "server" },
   },
+  // Override default Cloudflare target -> Netlify, karena project ini
+  // di-deploy sebagai Netlify Functions (bukan Cloudflare Workers atau Node biasa).
+  nitro: {
+    preset: "netlify",
+  },
 });
