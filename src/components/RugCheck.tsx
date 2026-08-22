@@ -38,6 +38,23 @@ const LEVEL_CLASS: Record<Level, string> = {
 
 const SOLANA_BURN_ADDRESS = "1nc1nerator11111111111111111111111111111111";
 
+const SOURCE_META: Record<
+  Source,
+  { label: string; domain: string; href: (address: string) => string } | null
+> = {
+  GoPlus: {
+    label: "GoPlus",
+    domain: "gopluslabs.io",
+    href: (a) => `https://gopluslabs.io/token-security/solana/${a}`,
+  },
+  RugCheck: {
+    label: "RugCheck.xyz",
+    domain: "rugcheck.xyz",
+    href: (a) => `https://rugcheck.xyz/tokens/${a}`,
+  },
+  "—": null,
+};
+
 const isSolanaAddress = (v: string) => /^[1-9A-HJ-NP-Za-km-z]{32,44}$/.test(v.trim());
 
 const num = (v: unknown) => {
