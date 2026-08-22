@@ -36,8 +36,6 @@ const LEVEL_CLASS: Record<Level, string> = {
   unknown: "text-muted-foreground",
 };
 
-const SOLANA_BURN_ADDRESS = "1nc1nerator11111111111111111111111111111111";
-
 const SOURCE_META: Record<
   Source,
   { label: string; domain: string; href: (address: string) => string } | null
