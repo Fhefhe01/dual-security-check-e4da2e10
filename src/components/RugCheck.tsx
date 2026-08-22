@@ -127,63 +127,46 @@ function buildReport(address: string, goPlus: any | null, rugCheck: any | null):
     }
   }
 
-  // 3. Liquidity locked / burned — RugCheck primary, GoPlus fallback
+  // 3. Liquidity locked — RugCheck ONLY (markets[].lp.lpLockedPct / lpLockedUSD).
+  // Verified against the live API: both fields exist on each market's `lp` object.
+  // RugCheck exposes no explicit LP-burn flag here, so we never claim "burned".
   {
     const markets: any[] = Array.isArray(rugCheck?.markets) ? rugCheck.markets : [];
-    const lockedPcts = markets
-      .map((m) => num(m?.lp?.lpLockedPct))
-      .filter((n): n is number => n != null);
+    const withLock = markets
+      .map((m) => ({ pct: num(m?.lp?.lpLockedPct), usd: num(m?.lp?.lpLockedUSD) }))
+      .filter((m): m is { pct: number; usd: number | null } => m.pct != null);
+    const best = withLock.sort((a, b) => b.pct - a.pct)[0];
 
-    if (lockedPcts.length) {
-      const pct = Math.max(...lockedPcts);
-      const level: Level = pct >= 90 ? "safe" : pct >= 50 ? "warn" : "danger";
-      const lpRisk = findRisk(/liquidity|lp\b/i);
+    if (best) {
+      const pct = best.pct;
+      const level: Level = pct >= 80 ? "safe" : pct >= 30 ? "warn" : "danger";
       checks.push({
-        label: "Liquidity locked / burned",
+        label: "Liquidity locked",
         source: "RugCheck",
         level,
-        detail: lpRisk?.description
-          ? `${pct.toFixed(1)}% of the LP tokens are locked or burned. ${lpRisk.description}`
-          : `${pct.toFixed(1)}% of the LP tokens are locked or burned.`,
+        detail:
+          best.usd != null && best.usd > 0
+            ? `${pct.toFixed(1)}% locked (${formatUSD(best.usd)})`
+            : `${pct.toFixed(1)}% of liquidity locked`,
       });
       if (level === "warn") score += 15;
       if (level === "danger") score += 30;
     } else {
-      const dexList: any[] = Array.isArray(goPlus?.dex) ? goPlus.dex : [];
-      const lpHolders = dexList.flatMap((d) => (Array.isArray(d?.lp_holders) ? d.lp_holders : []));
-      if (lpHolders.length) {
-        const lockedPct = lpHolders.reduce((acc: number, h: any) => {
-          const burned =
-            String(h?.address ?? "") === SOLANA_BURN_ADDRESS ||
-            String(h?.tag ?? "").toLowerCase().includes("burn");
-          const locked = h?.is_locked === 1 || h?.is_locked === "1" || h?.is_locked === true;
-          return acc + (locked || burned ? (num(h?.percent) ?? 0) : 0);
-        }, 0);
-        const pct = Math.round(lockedPct * 100);
-        const level: Level = pct >= 90 ? "safe" : pct >= 50 ? "warn" : "danger";
-        checks.push({
-          label: "Liquidity locked / burned",
-          source: "GoPlus",
-          level,
-          detail: `${pct}% of the LP tokens are locked or burned.`,
-        });
-        if (level === "warn") score += 15;
-        if (level === "danger") score += 30;
-      } else {
-        checks.push({
-          label: "Liquidity locked / burned",
-          source: "—",
-          level: "unknown",
-          detail: dexList.length
-            ? "LP lock data is not reported for this pool."
-            : "No DEX pool found yet — the token may still be on a bonding curve.",
-        });
-        score += 5;
-      }
+      checks.push({
+        label: "Liquidity locked",
+        source: "—",
+        level: "unknown",
+        detail: markets.length
+          ? "LP lock data is not reported for this pool."
+          : "No DEX pool found yet — the token may still be on a bonding curve.",
+      });
+      score += 5;
     }
   }
 
-  // 4. Top 10 holder concentration — GoPlus primary, RugCheck fallback
+  // 4. Top 10 holder concentration — GoPlus primary, RugCheck fallback.
+  // Locker breakdown uses RugCheck `knownAccounts` (address -> { name, type }),
+  // where type === "LOCKER" marks Streamflow/Meteora/Raydium/UNCX style vaults.
   {
     const gpHolders: any[] = Array.isArray(goPlus?.holders) ? goPlus.holders : [];
     const rcHolders: any[] = Array.isArray(rugCheck?.topHolders) ? rugCheck.topHolders : [];
@@ -193,11 +176,36 @@ function buildReport(address: string, goPlus: any | null, rugCheck: any | null):
         ? gpHolders.slice(0, 10).reduce((acc: number, h: any) => acc + (num(h?.percent) ?? 0), 0) * 100
         : rcHolders.slice(0, 10).reduce((acc: number, h: any) => acc + (num(h?.pct) ?? 0), 0);
       const level: Level = pct > 50 ? "danger" : pct > 30 ? "warn" : "safe";
+
+      // Breakdown is only possible with RugCheck holders + knownAccounts.
+      const known = rugCheck?.knownAccounts ?? {};
+      const lockerTotals = new Map<string, number>();
+      let regular = 0;
+      if (rcHolders.length) {
+        for (const h of rcHolders.slice(0, 10)) {
+          const p = num(h?.pct) ?? 0;
+          const meta = known?.[String(h?.owner ?? "")] ?? known?.[String(h?.address ?? "")];
+          const isLocker = String(meta?.type ?? "").toUpperCase() === "LOCKER";
+          const name = isLocker ? String(meta?.name ?? "locker") : null;
+          if (name) lockerTotals.set(name, (lockerTotals.get(name) ?? 0) + p);
+          else regular += p;
+        }
+      }
+
+      let detail = `The 10 largest wallets hold ${pct.toFixed(1)}% of the supply.`;
+      if (lockerTotals.size) {
+        const parts = [...lockerTotals.entries()]
+          .sort((a, b) => b[1] - a[1])
+          .map(([name, p]) => `${p.toFixed(1)}% in ${name}`);
+        if (regular > 0) parts.push(`${regular.toFixed(1)}% in regular wallets`);
+        detail += ` (${parts.join(", ")})`;
+      }
+
       checks.push({
         label: "Top 10 holder concentration",
         source: useGp ? "GoPlus" : "RugCheck",
         level,
-        detail: `The 10 largest wallets hold ${pct.toFixed(1)}% of the supply.`,
+        detail,
       });
       if (level === "warn") score += 15;
       if (level === "danger") score += 30;
@@ -211,6 +219,7 @@ function buildReport(address: string, goPlus: any | null, rugCheck: any | null):
       score += 5;
     }
   }
+
 
   // 5. Holder count — GoPlus primary, RugCheck fallback
   {
