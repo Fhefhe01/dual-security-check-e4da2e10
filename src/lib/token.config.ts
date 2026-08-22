@@ -1,7 +1,7 @@
 // Single source of truth for the token contract address.
 // Leave empty ("") until the official CA is released — the whole site
 // (display text, links, tokenomics) reacts to this one value.
-export const CONTRACT_ADDRESS = "";
+export const CONTRACT_ADDRESS = "fnpCHbCQjbpwcF1aHm8gxKvPXQK1AeDxYgDY6x1pump";
 
 export const HAS_CA = CONTRACT_ADDRESS.length > 0;
 
