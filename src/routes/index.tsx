@@ -240,11 +240,11 @@ function Index() {
             <h2 className="text-3xl sm:text-4xl">Lore</h2>
             <div className="mt-6 space-y-4 text-lg text-muted-foreground">
               <p>
-                Back in 2021, an orange cat named Kopi fell asleep on a trader's laptop while the charts
+                Back in 2021, an orange cat named Kopicat fell asleep on a trader's laptop while the charts
                 were open. His butt accidentally hit the buy button. That trader got rich.
               </p>
               <p>
-                Ever since, Kopi has been believed to have sharper market instincts than 400 indicators
+                Ever since, Kopicat has been believed to have sharper market instincts than 400 indicators
                 combined. He only asks for one thing in return: coffee, every morning, no sugar.
               </p>
               <p className="text-foreground">
