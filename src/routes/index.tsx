@@ -454,6 +454,15 @@ function Index() {
               >
                 Telegram Group
               </a>
+              <a
+                href="/game"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="glow rounded-full bg-primary px-7 py-3 font-display text-primary-foreground transition-transform hover:scale-105"
+              >
+                🎮 Play Kopicat Clicker
+              </a>
+
             </div>
 
           </div>
