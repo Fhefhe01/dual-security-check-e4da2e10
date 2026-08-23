@@ -185,3 +185,13 @@
   0%, 100% { transform: rotate(-2deg) translateY(0); }
   50% { transform: rotate(2deg) translateY(-10px); }
 }
+
+@utility float-up {
+  animation: float-up 0.9s ease-out forwards;
+}
+
+@keyframes float-up {
+  0% { opacity: 1; transform: translateY(0); }
+  100% { opacity: 0; transform: translateY(-70px); }
+}
+
