@@ -423,13 +423,13 @@ function Index() {
 
 
         {/* COMMUNITY */}
-        <section id="community" className="hero-bg">
-          <div className="mx-auto max-w-4xl px-4 py-16 text-center md:py-20">
+        <section id="community" className="hero-bg border-b border-border">
+          <div className="mx-auto max-w-4xl px-4 pt-16 pb-20 text-center md:pt-20 md:pb-24">
             <h2 className="text-3xl sm:text-4xl">Join the Cat Cult</h2>
             <p className="mx-auto mt-3 max-w-lg text-muted-foreground">
               The $KOPICAT community runs 24/7 — just like a cat that wakes you up at 3 AM.
             </p>
-            <div className="mt-8 flex flex-wrap justify-center gap-3">
+            <div className="mt-8 grid grid-cols-1 gap-3 sm:grid-cols-3">
               <a
                 href="https://x.com/KOPI_CAT_20H"
                 target="_blank"
@@ -437,14 +437,6 @@ function Index() {
                 className="rounded-full border-2 border-border bg-card px-7 py-3 font-display transition-colors hover:border-primary hover:text-primary"
               >
                 X (Twitter)
-              </a>
-              <a
-                href={TELEGRAM_STICKERS}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="rounded-full border-2 border-border bg-card px-7 py-3 font-display transition-colors hover:border-primary hover:text-primary"
-              >
-                Telegram Stickers
               </a>
               <a
                 href="https://t.me/kopicat_comuunity"
@@ -462,9 +454,7 @@ function Index() {
               >
                 🎮 Play Kopicat Clicker
               </a>
-
             </div>
-
           </div>
         </section>
       </main>
