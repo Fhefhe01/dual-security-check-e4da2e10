@@ -119,6 +119,31 @@ function RootShell({ children }: { children: ReactNode }) {
 function RootComponent() {
   const { queryClient } = Route.useRouteContext();
 
+  // Protect images from easy download (right-click + drag)
+  useEffect(() => {
+    const preventContextMenu = (e: MouseEvent) => {
+      const target = e.target as HTMLElement;
+      if (target.tagName === "IMG" || target.closest("img")) {
+        e.preventDefault();
+      }
+    };
+
+    const preventDrag = (e: DragEvent) => {
+      const target = e.target as HTMLElement;
+      if (target.tagName === "IMG" || target.closest("img")) {
+        e.preventDefault();
+      }
+    };
+
+    document.addEventListener("contextmenu", preventContextMenu);
+    document.addEventListener("dragstart", preventDrag);
+
+    return () => {
+      document.removeEventListener("contextmenu", preventContextMenu);
+      document.removeEventListener("dragstart", preventDrag);
+    };
+  }, []);
+
   return (
     <QueryClientProvider client={queryClient}>
       {/* Required: nested routes render here. Removing <Outlet /> breaks all child routes. */}
