@@ -150,6 +150,19 @@
     background-color: var(--color-background);
     color: var(--color-foreground);
   }
+
+  /* ===== Image Protection ===== */
+  img {
+    -webkit-user-drag: none;
+    -khtml-user-drag: none;
+    -moz-user-drag: none;
+    -o-user-drag: none;
+    user-drag: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+  }
 }
 
 @layer base {
@@ -194,4 +207,3 @@
   0% { opacity: 1; transform: translateY(0); }
   100% { opacity: 0; transform: translateY(-70px); }
 }
-
