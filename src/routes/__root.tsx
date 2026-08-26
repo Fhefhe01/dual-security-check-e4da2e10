@@ -116,31 +116,60 @@ function RootShell({ children }: { children: ReactNode }) {
   );
 }
 
+function isImageTarget(target: EventTarget | null): boolean {
+  if (!(target instanceof HTMLElement)) return false;
+  return target.tagName === "IMG" || !!target.closest("img");
+}
+
 function RootComponent() {
   const { queryClient } = Route.useRouteContext();
 
-  // Protect images from easy download (right-click + drag)
+  // Strong image protection
   useEffect(() => {
-    const preventContextMenu = (e: MouseEvent) => {
-      const target = e.target as HTMLElement;
-      if (target.tagName === "IMG" || target.closest("img")) {
+    const block = (e: Event) => {
+      if (isImageTarget(e.target)) {
         e.preventDefault();
+        e.stopPropagation();
       }
     };
 
-    const preventDrag = (e: DragEvent) => {
-      const target = e.target as HTMLElement;
-      if (target.tagName === "IMG" || target.closest("img")) {
+    // Capture phase so we catch the event early
+    const opts: AddEventListenerOptions = { capture: true };
+
+    document.addEventListener("contextmenu", block, opts);
+    document.addEventListener("dragstart", block, opts);
+    document.addEventListener("selectstart", block, opts);
+
+    // Block common save / view-source shortcuts when focus is near images
+    const onKeyDown = (e: KeyboardEvent) => {
+      const key = e.key.toLowerCase();
+      const isSave = (e.ctrlKey || e.metaKey) && key === "s";
+      const isViewSource = (e.ctrlKey || e.metaKey) && key === "u";
+      if ((isSave || isViewSource) && isImageTarget(document.activeElement)) {
         e.preventDefault();
       }
     };
+    document.addEventListener("keydown", onKeyDown, opts);
 
-    document.addEventListener("contextmenu", preventContextMenu);
-    document.addEventListener("dragstart", preventDrag);
+    // Extra: disable image context menu attribute on all current & future imgs
+    const disableImgContext = () => {
+      document.querySelectorAll("img").forEach((img) => {
+        img.setAttribute("oncontextmenu", "return false");
+        img.setAttribute("draggable", "false");
+      });
+    };
+    disableImgContext();
+
+    // Observe DOM for newly added images (e.g. lazy loaded)
+    const observer = new MutationObserver(() => disableImgContext());
+    observer.observe(document.body, { childList: true, subtree: true });
 
     return () => {
-      document.removeEventListener("contextmenu", preventContextMenu);
-      document.removeEventListener("dragstart", preventDrag);
+      document.removeEventListener("contextmenu", block, opts);
+      document.removeEventListener("dragstart", block, opts);
+      document.removeEventListener("selectstart", block, opts);
+      document.removeEventListener("keydown", onKeyDown, opts);
+      observer.disconnect();
     };
   }, []);
 
